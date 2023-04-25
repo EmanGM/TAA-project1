@@ -29,3 +29,6 @@ As data are in pixel gradient from 0 to 255 there is no need for normalization.
 (indicar coisas que poderiam ser melhoradas)
 
 # References 
+
+ver esta função do sklearn
+gridSearchCV()
