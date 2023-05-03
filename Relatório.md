@@ -15,12 +15,28 @@ This concists of classifiing traffict signs according to one of these 43 labels
 The world of automation in cars is fascinating to us and it's becoming increasingly evident that a car's software is just as critical as its physical and mechanical components. As a result, it's highly probable that many of us may have the opportunity to work in this field in the future.
 how many more people dedicate themselves to this subject of study, more quickly and easier it will be to find a robust and very eficient model which is able to correctly classify the traffit signs. Althought our contribution may not be  This is a very relevant topic because ...
 
-# State of the Art
+# Data visualization
+
+
 
 # Methods
 
 As we can't change data, we need to develop this project in a model centric view.
 As data are in pixel gradient from 0 to 255 there is no need for normalization.
+Due to class inbalance, accuraccy is not a googd metric, so we are using F1 score.
+
+# Models 
+
+## Logistic Regression
+
+## Artificial Neural Network
+
+## K-nearest Neighbors
+
+## SVM
+
+
+
 
 # Results
 
