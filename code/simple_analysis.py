@@ -7,7 +7,7 @@ from collections import Counter, OrderedDict
 # -------------------------------------------------------
 train_dataset = []
 train_dimensions = []
-with open("trabalho1/archive/Train.csv", "r") as train_stats:
+with open("./archive/Train.csv", "r") as train_stats:
     for line in train_stats:
         if not line.startswith("Width"):
             columns = line.split(",")
@@ -37,18 +37,13 @@ for i in sorted_value_index:
     #print("{:2}\t{}".format(keys[i], values[i]))
     continue
 values.sort(reverse=True)
-plt.bar(range(0,43), values)
-plt.xticks(range(0,43), sorted_value_index)
-plt.title("Number of samples per class on train dataset")
-plt.xlabel("class ID")
-plt.ylabel("samples")
-#plt.show()
+print(values)
 
 
 # Related to test
 # -------------------------------------------------------
 test_classes = []
-with open("trabalho1/archive/Test.csv", "r") as test_stats:
+with open("./archive/Test.csv", "r") as test_stats:
     for line in test_stats:
         if not line.startswith("Width"):
             columns = line.split(",")
@@ -57,16 +52,21 @@ with open("trabalho1/archive/Test.csv", "r") as test_stats:
 print("Number of images to test:", len(test_classes))
 counter = dict(Counter(test_classes))
 keys = list(counter.keys())
-values = list(counter.values())
+test_values = list(counter.values())
 #sorted_value_index = np.argsort(values)[::-1]
 for i in sorted_value_index:
     #print("{:2}\t{}".format(keys[i], values[i]))
     continue
-values.sort(reverse=True)
-print(values)
-plt.bar(range(0,43), values)
+test_values.sort(reverse=True)
+print(test_values)
+print(len(values), len(test_values))
+va = np.array(values)
+vb = np.array(test_values)
+plt.bar(range(0,43), va + vb, label="train")
+plt.bar(range(0,43), vb, label="test")
+plt.legend()
 plt.xticks(range(0,43), sorted_value_index)
-plt.title("Number of samples per class on test dataset")
+plt.title("Number of samples per class on dataset")
 plt.xlabel("class ID")
 plt.ylabel("samples")
 plt.show()
