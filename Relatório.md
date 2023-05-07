@@ -53,6 +53,27 @@ CNN is now the state of the art in this situation as they usually yield higher a
 
 ## Artificial Neural Network
 
+Artificial Neural Networks tries to mimic the learning process of the human brain utilizing most of that math that is behind logistic regression. This imagines layers of neurons that activate according to weights of the previous neurons, the first layer is the input layer and its values never change as this layer contains the features of our dataset, then exists a set of hidden layers that can have an arbitrary number of neurons and it is possible to have 1 or more of this layer, and at last, there is the output layer that assigns a probability to each of the labels. In a Dense Connected Layer each neuron receives all the values from previous neurons multiplied by weights and summed to a bias, then the computed values passes across an activation function and the result is forwarded to the neurons on the next layer. After this process, there is a deviation from the real ground truth an errors but the twiks to ajust the weights are propagated to the previous layers in a process called backprogatation.     
+To calculate the error its crucial to have a set of data that wasn't used in the input layer, so we split the original train dataset to have a validation set which allows our NN models to perform cross validation which is a practical and reliable way for testing the predicting power of models.   
+
+There are many possible architectures for this type of models, 1 hidden layer, 2 hidden layers or more and its hard to say *a priori* which parameters will give the best results, so exhaustive experimentation needs to be performed.  
+
+We started by a simple model of only one hidden layer but had to figure out what would be the best number of neurons in that layer. For that we trained the model varying the number of neurons in the hidden layer, from 400 to 1000 with steps of 100.  
+
+![best_neurons_hidden_layer](./images/neurons_hidden_layer.png) 
+Through the analysis of this grpah we concluded that the best number of neurons to use in the hidden layer was 800 as it is the value that outputs be best accuracy for the validation process. 
+
+![accuracy](./images/NN_1_model_accuracy.png)
+
+![loss](./images/NN_1_model_loss.png)
+These graphs show the accuracy and loss function along epochs. We clearly see that 
+
+![learning_rate](./images/NN_learning_rate.png)
+With the same conditions we trained changing the learning rate which is a parameter that controls how fast the loss function aproaches its local minimum. Through this plot we saw that in our case a value of 0.005 is what works best as its aproaches faster a low value of loss function.
+
+![regularization](./images/NN_confusion_matrix.png)
+
+
 ## K-nearest Neighbors
 
 This method is very simple and is used in classification problems. It checks the neighbors of a given point in an n-dimension space and by comparing the distances to other points the most *k* near examples vote and the class that has more votes wins.  
