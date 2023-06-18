@@ -1,7 +1,23 @@
 # Abstract 
 
-# Introduction
+(copiado do outro)
+Nowadays autonomous driving is a hot topic and
+it is becoming increasingly evident that cars will become more
+and more automated in the future. To achieve this, it is necessary
+that cars can analyze the environment around them and make the
+best decisions based on that. One of the most important aspects
+of this is the ability to recognize traffic signs. This report shows
+our approach to the machine learning GTSRB - German Traffic
+Sign Recognition Benchmark challenge. The GTSRB dataset
+consists of 43 classes of traffic signs, commonly found on German
+roads, and has over 50000 images. In this report, we analyze
+how different machine learning models perform in this task and
+compare their results. We also analyze the results of the models
+and try to understand why some models perform better than
+others.
 
+
+# Introduction
 
 More and more we see an increased interest in automated vehicle driving both in the manufacturers as well as in common citizens wanting to buy such products. The relevance of this study is ... to find a model that most accurately possibly predicts traffic signs, which will help in autonomous driving.
 This project consists of classifying images of traffic signs according to one of these 43 labels shown below.

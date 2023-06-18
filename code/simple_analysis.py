@@ -7,7 +7,7 @@ from collections import Counter, OrderedDict
 # -------------------------------------------------------
 train_dataset = []
 train_dimensions = []
-with open("./archive/Train.csv", "r") as train_stats:
+with open("trabalho1/archive/Train.csv", "r") as train_stats:
     for line in train_stats:
         if not line.startswith("Width"):
             columns = line.split(",")
@@ -43,7 +43,7 @@ print(values)
 # Related to test
 # -------------------------------------------------------
 test_classes = []
-with open("./archive/Test.csv", "r") as test_stats:
+with open("trabalho1/archive/Test.csv", "r") as test_stats:
     for line in test_stats:
         if not line.startswith("Width"):
             columns = line.split(",")
