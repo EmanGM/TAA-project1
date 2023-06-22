@@ -6,27 +6,32 @@ from collections import Counter, OrderedDict
 # Related to train
 # -------------------------------------------------------
 train_dataset = []
-train_dimensions = []
+train_dimensions_x = []
+train_dimensions_y = []
 with open("trabalho1/archive/Train.csv", "r") as train_stats:
     for line in train_stats:
         if not line.startswith("Width"):
             columns = line.split(",")
             train_dataset.append(int(columns[-2]))
-            train_dimensions.append(int(columns[0]) * int(columns[0]))
+            train_dimensions_x.append( int(columns[0]))
+            train_dimensions_y.append( int(columns[1]))
 
-train_dimensions = np.array(train_dimensions)
+train_dimensions = np.array(train_dimensions_y)
 by_pixels = []
-by_pixels.append((train_dimensions <= 40*40).sum())
-by_pixels.append((train_dimensions <= 80*80).sum())
-by_pixels.append((train_dimensions <= 100*100).sum())
-by_pixels.append((train_dimensions > 100*100).sum())
-print((train_dimensions <= 40*40).sum())
-print((train_dimensions <= 80*80).sum())
-print((train_dimensions <= 100*100).sum())
-print((100 * 100 < train_dimensions).sum())
-#fig, ax = plt.subplots()
-#ax.pie(by_pixels, labels=["less than 40x40", "less than 80x80", "less than 100x100", "more than 100x100"])
-#fig.show()
+by_pixels.append((train_dimensions <= 30).sum())
+by_pixels.append(len(([1 for i in train_dimensions if 30 < i <= 40])))
+by_pixels.append(len(([1 for i in train_dimensions if 40 < i <= 60])))
+by_pixels.append(len(([1 for i in train_dimensions if 60 < i <= 80])))
+by_pixels.append(len(([1 for i in train_dimensions if 80 < i <= 100])))
+by_pixels.append(len(([1 for i in train_dimensions if i > 100])))
+
+
+plt.bar(["< 30", "< 40", "< 60", "< 80", "< 100", "> 100"], by_pixels, color='orange')
+plt.legend()
+plt.title("Width of the images")
+plt.xlabel("width in pixels")
+plt.ylabel("number of samples")
+plt.show()
 
 print("Number of images to train:", len(train_dataset))
 counter = dict(Counter(train_dataset))

@@ -1,6 +1,6 @@
 # Abstract 
 
-(copiado do outro)
+(copiado do outro)  
 Nowadays autonomous driving is a hot topic and
 it is becoming increasingly evident that cars will become more
 and more automated in the future. To achieve this, it is necessary
@@ -29,19 +29,30 @@ This project consists of classifying images of traffic signs according to one of
 The world of automation in cars is fascinating to us and it's becoming increasingly evident that a car's software is just as critical as its physical and mechanical components. As a result, it's highly probable that many of us may have the opportunity to work in this field in the future. Computer vision and the ability to recognize patterns on the road are fundamental to an autonomous car and machine learning models are a way to solve this need with pretty good results.
 As many more people dedicate themselves to this subject of study, quickly and easier it will be to find a robust and very efficient model which will be able to correctly classify traffic signs. Although our contribution may not be worthy as were are just starting in this field and our knowledge is limited, is it always good to be able to try to perform as well as professionals.
 
+# State of the Art
+
+The German Traffic Sign Recognition Benchmark (GTSRB) dataset, was provided by the Real-Time Computer Vision research group at *Institut für Neuroinformatik (INI)*[[1](https://www.ini.rub.de/)], in Germany and was used to held a competition at the International Joint Conference on Neural Networks (IJCNN) in 2011. Along side with the German Traffic Sign Detection Benchmark (GTSDB), ...
+The team who won the competition had a total of 99.46% recognition rate with new unseen examples and used the Committee of CNNs method. Through the analysis of their paper[[2](https://www.sciencedirect.com/science/article/abs/pii/S0893608018300054)] ... 
+However, latter appear another contestants who achived 99.71% with the method of CNN with 3 Spatial Transformers[[2](https://www.sciencedirect.com/science/article/abs/pii/S0893608018300054)]. They used an architecture with 3 CNN layers and 14,629,801 trainable parameters.
+On IEE website, ...
+In Kaggle website, entusiasts attempt to find the best model they can get.
+"Traffic sign detection is a challenging computer vision task of high industrial relevance."
+
+The paper of papers https://ieeexplore.ieee.org/document/6706807
+este daqui: https://paperswithcode.com/dataset/gtsrb 
+https://www.sciencedirect.com/science/article/abs/pii/S0893608018300054 
+
 
 # Data visualization
 
 As said before, we have 43 classes corresponding to a traffic sign. 
 We have a folder with 39209 images to train and a folder with 12630 images to test, this makes around 24.36% of the entire dataset to test. 
 
-![train_images](./images/traindataset.png)
-
 We have a total of 39209 images to train spread across all 43 classes, however, each class does not have the same amount of samples 
 
-![test_images](./images/testdataset.png)
+![images_distribuition](./images/traindataset.png)
 
-As seen by the graphs above, we have a data imbalance.
+As seen by the graph above, we have a data imbalance.
 
 We picked 30 random samples from our dataset and it is displayed below in a 6 by 5 grid.
 ![random_samples](./images/random_samples.png)
@@ -105,49 +116,10 @@ To run this method, all the images are in greyscale and resized to 30x30.
 
 As we can see from the graph, K-nearest Neighbors doesn't yield good results with any value of *k*, in fact no more than 37% of F1 score was possible to achieve. These results were according to our expectations. 
 
-## SVM
-
-Support Vector Machine (SVM) is a type of supervised learning algorithm that can be used for both classification and regression types of analysis.
-The objective of the SVM algorithm is to find a hyperplane in an N-dimensional space (N — the number of features) that distinctly separates the datapoints from each class. The data points which are closest to the hyperplane are called support vectors and are used to determine the margin for the classifier. The goal is to find the optimal hyperplane that maximizes the margin between the two classes.
-Sometimes classes are not linearly separable by a hyperplane, so we need to transform the data into a higher dimension space. To solve this it's used the kernel trick. The kernel trick is a method by which we can use a linear classifier to solve a non-linear problem. It transforms the data into another dimension that has a clear dividing margin between classes of data. The kernel trick is used to find a suitable hyperplane in the new dimension.
-For binary classification, one hyperplane would be enough to separate the two classes and to predict the class of a new data point. Since we have 43 classes, one unique hyperplane wouldn't be enough to seperate all 43 classes so we used a one-vs-one approach, which means that we train a model for each pair of classes and then we predict the class that has the most wins. For this kind of problem, we have to divide the problem in N(N-1)/2 classifiers, in our case, 903 classifiers were needed.
-
-In our approach to the problem, we started by separating the train dataset into two datasets, one for training and another for validation in a scale of 80%/20%, making sure that both datasets had the same proportion of images in each class in order to avoid some classes being forgotten when training or validating our model. Both of them and the test dataset were resized to 30x30 pixels, converted to grayscale and normalized.
-![ProportionalDatasets](./images/svm_proportional_datasets.png)
-
-The first step to find the best model was to find out which would be the best kernel, C and gamma values. To do this, we started by using GridSearchCV, which is a method that allows us to find the best parameters for a model by testing all the possible combination of parameters. The problem was that since our dataset was huge and had a lot of features, GridSearchCV was taking too long to run, so what we did was first to create a subset of the train dataset with a small quantity of images (always mantaining the proportion in each class) and then we used GridSearchCV to find the best parameters for that subset. For each combination of parameters we used cross-validation with 5 folds to find the hyperparameters with the best accuracy in the validation dataset.
-
-We got the following results:
-![3DPlot](./images/svm_hyperparameters_comparation.png)
-![Dataframe](./images/svm_hyperparameters_dataframe.png)
-
-As we can see, the best kernel was clearly the RBF kernel, since it was in all of the Top 3 combination of parameters and those had much better validation accuracy. High values of C was also better, also winning by a large validation accuracy margin when comparing to the other values of C. The gamma values were not so clear, but the best values were 0.0001 and 0.001 when using big values for C.
-After analysing those results we decided to use the option with the best validation accuracy, which was kernel='rbf', C=100 and gamma=0.0001.
-
-After finding out which was the best combination of hyperparameters, we used those parameters to train a model with the entire train dataset and then we tested it with the entire validation dataset. We got the following results:
-
-![AccuracyLoss](./images/svm_validation_accuracy_loss.png)
-
-As we can see the model was really good as predicting the accuracy in the train dataset, having an accuracy of near 95%. On the other hand, it was not so good at predicting using the validation dataset, having an accuracy of near 80%. This means that the model ended up overfitting the train dataset, which means that it learned too much from the train dataset and ended up not being able to generalize well to new data.
-There are several explanation to this like:
-- This is a common problem when using SVM, since it's a model that is very sensitive to the hyperparameters and it's very easy to overfit the data.
-- The dataset is very big and has a lot of features, so it's very easy to overfit the data, because the model might be learning noise instead of the actual patterns.
-
-Even though the validation loss is not very good, the model still has a good accuracy, when comparing to some other models that we tried.
-
-![ConfusionMatrix](./images/svm_confusion_matrix.png)
-With the confusion matrix we can see that the model was able to predict most of the classes correctly and that it has a medium accuracy for the most cases.
-
-Another way for better viewing the accuracy of the model, since not all classes have the same ammount of images is to check the accuracy for each class in particularly.
-![AccuracyClass](./images/svm_accuracy_class.png)
-As we can see, the model has different accuracies for each class, but even though some of them are very high, as near as 98%, others ,likes class 0 and 30, have a very low accuracy, below 40%.
-This has several explanations like, for example, the class 0 images are very similar to images from other classes since it is as maximum velocity signal and other classes are also maximum velocity signals, in the class 30, some images are very blurry and dark and it's very difficult to see the actual signals, etc.
-
-Overall, the model, when using the real test dataset, ended up having an accuracy of 81%, which is not a bad result, since we are working with a huge dataset and with images that are very similar to each other, but it's also not a very good result, since we were expecting to have a better accuracy.
-
 
 # Results
 
+Não usamos modelos mais complexos porque nãos ejustificava com a quantidade de dados que tinhamos.
 
 
 # Conclusions
